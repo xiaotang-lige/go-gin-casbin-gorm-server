@@ -1,6 +1,7 @@
 package main
 
 import (
+	"messageServe/dao"
 	"messageServe/linker"
 	"messageServe/route"
 	"messageServe/server"
@@ -9,6 +10,7 @@ import (
 
 func main() {
 	linker.Main()
+	dao.Main()
 	server.Main()
 	route.Main()
 }

@@ -25,12 +25,12 @@ type configData struct {
 }
 
 func (*server) messageHandle() {
-	defer linker.TcpConn.Close()
+	defer linker.Db.TcpConn.Close()
 	for {
 		cofig := &configData{}
 		cofig.ctx, cofig.cancel = context.WithCancel(context.Background())
 		var err error
-		cofig.conn, err = linker.TcpConn.Accept()
+		cofig.conn, err = linker.Db.TcpConn.Accept()
 		if err != nil {
 			fmt.Println("客户端对接失败:", err)
 			continue

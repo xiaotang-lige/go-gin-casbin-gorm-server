@@ -6,12 +6,17 @@ import (
 	"net"
 )
 
-var RedisDb *redis.Client
-var TcpConn net.Listener
-var MysqlDb *gorm.DB
+type db struct {
+	RedisDb *redis.Client
+	TcpConn net.Listener
+	MysqlDb *gorm.DB
+}
+
+var Db = new(db)
 
 func Main() {
-	redisDb()
-	tcpListen()
 	mysqlDb()
+	redisDb()
+	casbinDb()
+	tcpListen()
 }

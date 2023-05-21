@@ -9,12 +9,12 @@ import (
 )
 
 func redisDb() {
-	RedisDb = redis.NewClient(&redis.Options{
+	Db.RedisDb = redis.NewClient(&redis.Options{
 		Addr:     "localhost:6379",
 		Password: "", // no password set
 		DB:       0,  // use default DB
 	})
-	if err := RedisDb.Ping(context.Background()).Err(); err != nil {
+	if err := Db.RedisDb.Ping(context.Background()).Err(); err != nil {
 		log.Println("redis连接失败!", err)
 		return
 	}
@@ -23,7 +23,7 @@ func redisDb() {
 func mysqlDb() {
 	var err error
 	dsn := "root:1234@tcp(127.0.0.1:3306)/messageServer?charset=utf8mb4&parseTime=True&loc=Local"
-	MysqlDb, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	Db.MysqlDb, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Println("mysql連接出錯：", err)
 	}

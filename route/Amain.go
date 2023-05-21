@@ -3,6 +3,7 @@ package route
 import (
 	"github.com/gin-gonic/gin"
 	"log"
+	"messageServe/tool"
 )
 
 type route struct {
@@ -17,11 +18,11 @@ func Main() {
 	RouteApi.link()
 	//無需權限
 	{
-		RouteApi.userConfig(RouteApi.open())
+		RouteApi.userConfig(RouteApi.control())
 	}
 	//需要權限
 	{
-
+		RouteApi.loggin(RouteApi.open())
 	}
 	err := RouteApi.r.Run(":8080")
 	if err != nil {
@@ -35,7 +36,7 @@ func (t *route) link() {
 // casbin權限管理
 func (t *route) control() *gin.RouterGroup {
 	r := t.r.Group("")
-	r.Use()
+	r.Use(tool.CasbinHandle())
 	return r
 }
 

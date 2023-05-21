@@ -14,9 +14,9 @@ func redisLPush(ctx context.Context, mes *model.Message) error {
 	if err != nil {
 		log.Println(err)
 	}
-	return linker.RedisDb.LPush(ctx, mes.Target, ll).Err()
+	return linker.Db.RedisDb.LPush(ctx, mes.Target, ll).Err()
 }
 func redisBRPop(ctx context.Context, time time.Duration, userId string) ([]string, error) {
-	v, err := linker.RedisDb.BRPop(ctx, time, userId).Result()
+	v, err := linker.Db.RedisDb.BRPop(ctx, time, userId).Result()
 	return v, err
 }
