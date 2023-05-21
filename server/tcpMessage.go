@@ -16,8 +16,6 @@ import (
 
 var messageHandle = make(chan *model.Message, 1024)
 
-// var hashMap = make([]map[string]*configData,1024)
-// var online =make([]string,1024)
 type configData struct {
 	conn   net.Conn
 	reader *bufio.Reader
@@ -26,7 +24,7 @@ type configData struct {
 	cancel context.CancelFunc
 }
 
-func (server) messageHandle() {
+func (*server) messageHandle() {
 	defer linker.TcpConn.Close()
 	for {
 		cofig := &configData{}
@@ -44,7 +42,6 @@ func (server) messageHandle() {
 			log.Println("非法访问！")
 			continue
 		}
-		//userId := "1234"
 		log.Println(cofig.userId + "客户端对接完成！")
 		go cofig.listen()
 		go cofig.write()
@@ -68,7 +65,6 @@ func authentication(reader *bufio.Reader) (string, int, bool) {
 	return "", 0, false
 }
 func (config *configData) listen() {
-	//reader := bufio.NewReader(conn)
 	for {
 		megbyte, err := tcp.Decode(config.reader)
 		if err != nil || err == io.EOF {
@@ -81,23 +77,11 @@ func (config *configData) listen() {
 		json.Unmarshal(megbyte, msg)
 		msg.UserId = config.userId
 		msg.CreateTime = time.Now() //未设置标准格式
-		//log.Println(msg) //-------------
 		log.Println("监听到" + config.userId + "的消息：")
-		//log.Println(msg)
 		messageHandle <- msg
 	}
 }
 func (config *configData) write() {
-	//wg := sync.WaitGroup{}
-	//wg.Add(1)
-	//go func() {
-	//	select {
-	//	case <-config.ctx.Done():
-	//		wg.Done()
-	//		return
-	//	}
-	//}()
-	//go func() {
 	for {
 		if config.ctx.Err() != nil {
 			log.Println(config.userId + "写入连接已关闭")
@@ -107,18 +91,16 @@ func (config *configData) write() {
 		if len(v) == 0 {
 			continue
 		}
+		log.Println(v)
 		//待办：关闭客户端一瞬间的消息流失问题，加锁
-		by, err := tcp.Encode(v[1])
+		by, err := tcp.Encode([]byte(v[1]))
 		_, err = config.conn.Write(by)
 		if err != nil {
 			log.Println(config.userId+"写入连接已关闭:", err)
 			config.cancel()
-			//wg.Done()
 			return
 		}
 	}
-	//}()
-	//wg.Wait()
 }
 func (server) handel() {
 	for v := range messageHandle {
@@ -126,23 +108,15 @@ func (server) handel() {
 	}
 }
 func handelType(msg *model.Message) {
+
 	switch msg.MessageType {
 	//文字通道
 	case 1:
-		redisLPush(context.Background(), msg)
+		err := redisLPush(context.Background(), msg)
+		if err != nil {
+			log.Println(err)
+		}
 	case 2:
 	case 3:
-
 	}
-}
-func redisLPush(ctx context.Context, mes *model.Message) error {
-	ll, err := json.Marshal(mes)
-	if err != nil {
-		log.Println(err)
-	}
-	return linker.RedisDb.LPush(ctx, mes.Target, ll).Err()
-}
-func redisBRPop(ctx context.Context, time time.Duration, userId string) ([]string, error) {
-	v, err := linker.RedisDb.BRPop(ctx, time, userId).Result()
-	return v, err
 }

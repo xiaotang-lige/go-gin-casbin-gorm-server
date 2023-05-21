@@ -7,7 +7,7 @@ import (
 )
 
 // Encode 将消息编码
-func Encode(message string) ([]byte, error) {
+func Encode(message []byte) ([]byte, error) {
 	// 读取消息的长度，转换成int32类型（占4个字节）
 	var length = int32(len(message))
 	var pkg = new(bytes.Buffer)
@@ -17,7 +17,7 @@ func Encode(message string) ([]byte, error) {
 		return nil, err
 	}
 	// 写入消息实体
-	err = binary.Write(pkg, binary.LittleEndian, []byte(message))
+	err = binary.Write(pkg, binary.LittleEndian, message)
 	if err != nil {
 		return nil, err
 	}

@@ -1,10 +1,12 @@
 package server
 
-type server struct{}
+type server struct {
+	UserConfig
+}
 
 var ServerApi = new(server)
 
 func Main() {
 	go ServerApi.handel()
-	ServerApi.messageHandle()
+	go ServerApi.messageHandle()
 }
