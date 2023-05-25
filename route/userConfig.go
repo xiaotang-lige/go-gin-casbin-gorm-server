@@ -6,6 +6,6 @@ import (
 )
 
 func (t *route) userConfig(r *gin.RouterGroup) {
-	api := r.Group("userConfig")
-	api.GET("query", server.ServerApi.UserConfig.UserConfig)
+	api := r.Group("login")
+	api.POST("query", server.Api.UserConfig.Login)
 }

@@ -2,6 +2,8 @@ package tool
 
 type toolMini struct {
 	//casbin.CasbinMain
+	Token    *Token
+	Response *response
 }
 
-var Tool = new(toolMini)
+var Api = new(toolMini)

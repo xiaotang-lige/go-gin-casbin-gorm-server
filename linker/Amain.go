@@ -12,7 +12,7 @@ type db struct {
 	MysqlDb *gorm.DB
 }
 
-var Db = new(db)
+var Api = new(db)
 
 func Main() {
 	mysqlDb()

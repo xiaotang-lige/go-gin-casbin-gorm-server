@@ -7,20 +7,17 @@ import (
 )
 
 type dao struct {
-	userConfig
+	UserConfig *userConfig
+	Contacts   *contacts
 }
 
-var DaoApi = new(dao)
+var Api = new(dao)
 
 func Main() {
-	autoCreateTable(
+	err := linker.Api.MysqlDb.AutoMigrate(
 		&model.UserConfig{},
+		&model.Contacts{},
 	)
-}
-
-// 創建表
-func autoCreateTable(i interface{}) {
-	err := linker.Db.MysqlDb.AutoMigrate(i)
 	if err != nil {
 		log.Println(err)
 	}

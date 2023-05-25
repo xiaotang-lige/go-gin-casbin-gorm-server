@@ -8,7 +8,7 @@ import (
 
 func tcpListen() {
 	var err error
-	Db.TcpConn, err = net.Listen("tcp", "127.0.0.1:9090")
+	Api.TcpConn, err = net.Listen("tcp", "127.0.0.1:9090")
 	if err != nil {
 		fmt.Println("TcpListen连接失败:", err)
 		return

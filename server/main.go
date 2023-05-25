@@ -2,11 +2,12 @@ package server
 
 type server struct {
 	UserConfig
+	Contacts *contacts
 }
 
-var ServerApi = new(server)
+var Api = new(server)
 
 func Main() {
-	go ServerApi.handel()
-	go ServerApi.messageHandle()
+	go Api.handel()
+	go Api.messageHandle()
 }

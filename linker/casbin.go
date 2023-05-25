@@ -8,7 +8,7 @@ import (
 )
 
 func casbinDb() *casbin.Enforcer {
-	db, err := gormadapter.NewAdapterByDB(Db.MysqlDb)
+	db, err := gormadapter.NewAdapterByDB(Api.MysqlDb)
 	m, err := model.NewModelFromString(`
 [request_definition]
 r = sub, obj, act
