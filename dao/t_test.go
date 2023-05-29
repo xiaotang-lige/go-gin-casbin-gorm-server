@@ -37,7 +37,8 @@ func TestDaoContacts(t *testing.T) {
 }
 func TestOnlineList_Get(t *testing.T) {
 	linker.Main()
-	Api.OnlineList.Add("asdsadasda", "asdsad", 0)
-
+	data, db := Api.Contacts.QueryAll(&model.Contacts{A: "xiaowang", State: 1})
+	log.Println(db.Error)
+	log.Println(data[1])
 	//Api.OnlineList.Get()
 }

@@ -13,3 +13,12 @@ type UserConfig struct {
 func (*UserConfig) TableName() string {
 	return "user_configs"
 }
+
+type UserData struct {
+	TChatModel
+	UserId   string `json:"userId" form:"userId" binding:"required"`
+	UserName string `json:"userName" form:"userName" `
+	LogoPath string `json:"logoPath" form:"logoPath" `
+	Age      int
+	Gender   int
+}

@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
 	"messageServe/model"
+	"strconv"
 )
 
 type Token struct {
@@ -34,14 +35,21 @@ func (t *Token) Create(userConfig *model.UserConfig) (string, error) {
 	claims := jwt.NewWithClaims(jwt.SigningMethodHS256, &model.Token{
 		UserId:         userConfig.UserId,
 		UserName:       userConfig.UserName,
-		StatusId:       userConfig.Status,
+		StatusId:       strconv.Itoa(userConfig.Status),
 		StandardClaims: jwt.StandardClaims{},
 	})
 	return claims.SignedString(t.key())
 }
+func (t *Token) Issue(userConfig *model.UserConfig) string {
+	token, err := t.Create(userConfig)
+	if err != nil {
+		return ""
+	}
+	return token
+}
 func TokenHande() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		token := c.Request.Header.Get("token")
+		token := c.GetHeader("Token")
 		if token == "" {
 			Api.Response.Write(c, &model.Response{State: 400, Err: "非法访问！"})
 			c.Abort()

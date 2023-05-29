@@ -1,7 +1,6 @@
 package tool
 
 import (
-	"log"
 	"messageServe/model"
 	"testing"
 )
@@ -29,15 +28,5 @@ func Test_token(t *testing.T) {
 		Password: "123",
 		Status:   2,
 	}
-	token, err := Api.Token.Create(config)
-	if err != nil {
-		log.Println("创建token错误！", err)
-	}
 
-	m, err := Api.Token.UnPack(token)
-	if err != nil {
-		log.Println("获取token模型失败！", err)
-	}
-	log.Println(m.UserId)
-	log.Println(m)
 }

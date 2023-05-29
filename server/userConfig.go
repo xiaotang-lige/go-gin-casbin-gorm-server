@@ -22,5 +22,6 @@ func (t *UserConfig) Login(c *gin.Context) {
 		tool.Api.Response.Write(c, &model.Response{State: 400, Err: "账号密码错误！"})
 		return
 	}
+	userData.Token = tool.Api.Token.Issue(userData)
 	tool.Api.Response.Write(c, &model.Response{State: 200, Len: int(db.RowsAffected), Data: userData})
 }

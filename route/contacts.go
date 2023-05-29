@@ -8,5 +8,4 @@ import (
 func (*route) contacts(r *gin.RouterGroup) {
 	t := r.Group("linkman")
 	t.GET("all", server.Api.Contacts.ShowAll)
-
 }
