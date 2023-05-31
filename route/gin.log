@@ -9,3 +9,5 @@
 [GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
 Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
 [GIN-debug] Listening and serving HTTP on :8080
+[GIN] 2023/05/31 - 22:47:28 | 400 |            0s |       127.0.0.1 | GET      "/linkman/all"
+[GIN] 2023/05/31 - 22:52:02 | 200 |      7.7736ms |       127.0.0.1 | GET      "/linkman/all"
