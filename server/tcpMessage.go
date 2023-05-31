@@ -10,6 +10,7 @@ import (
 	"messageServe/linker"
 	"messageServe/model"
 	"messageServe/tcp"
+	"messageServe/tool"
 	"net"
 	"time"
 )
@@ -37,7 +38,7 @@ func (*server) messageHandle() {
 		}
 		cofig.reader = bufio.NewReader(cofig.conn)
 		var b bool
-		cofig.userId, _, b = authentication(cofig.reader) //牵手连接校验
+		cofig.userId, b = authentication(cofig.reader) //牵手连接校验
 		if !b {
 			log.Println("非法访问！")
 			continue
@@ -47,22 +48,15 @@ func (*server) messageHandle() {
 		go cofig.write()
 	}
 }
-func authentication(reader *bufio.Reader) (string, int, bool) {
+func authentication(reader *bufio.Reader) (string, bool) {
 	megbyte, err := tcp.Decode(reader)
-	if err != nil || err == io.EOF {
-		log.Println(err)
-		return "", 0, false
+	var data string
+	json.Unmarshal(megbyte, &data)
+	t, err := tool.Api.Token.Verify(data)
+	if !t.Valid || err != nil {
+		return "", false
 	}
-	auten := &model.Authentication{}
-	err = json.Unmarshal(megbyte, auten)
-	if err != nil {
-		log.Println(err)
-		return "", 0, false
-	}
-	if auten.UserId == "dawang" || auten.UserId == "xiaowang" { //鉴权对比
-		return auten.UserId, 1, true
-	}
-	return "", 0, false
+	return t.Claims.(*model.Token).UserId, true
 }
 func (config *configData) listen() {
 	for {

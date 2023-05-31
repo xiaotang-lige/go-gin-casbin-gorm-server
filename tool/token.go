@@ -56,7 +56,12 @@ func TokenHande() gin.HandlerFunc {
 			return
 		}
 		t, err := Api.Token.Verify(token)
-		if !t.Valid || err != nil {
+		if err != nil {
+			Api.Response.Write(c, &model.Response{State: 400, Err: "token验证失败！"})
+			c.Abort()
+			return
+		}
+		if !t.Valid {
 			Api.Response.Write(c, &model.Response{State: 400, Err: "token验证失败！"})
 			c.Abort()
 			return
