@@ -2,10 +2,8 @@ package route
 
 import (
 	"github.com/gin-gonic/gin"
-	"io"
 	"log"
 	"messageServe/tool"
-	"os"
 )
 
 type route struct {
@@ -30,8 +28,8 @@ func Main() {
 	}
 }
 func (t *route) link() {
-	f, _ := os.Create(tool.ProjectPath() + "/route/gin.log")
-	gin.DefaultWriter = io.MultiWriter(f)
+	//f, _ := os.Create(tool.ProjectPath() + "/route/gin.log")
+	//gin.DefaultWriter = io.MultiWriter(f)
 	t.r = gin.Default()
 }
 
